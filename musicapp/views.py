@@ -1,12 +1,15 @@
-from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from .models import Song, Artiste, Lyric
-from .serializers import SongSerializer, ArtisteSerializer, LyricSerializer
+from .serializers import LyricUpdateSerializer, SongSerializer, ArtisteSerializer, LyricSerializer, SongUpdateSerializer
 
 # Create your views here.
 class SongsViewset(ModelViewSet):
   queryset = Song.objects.all()
-  serializer_class = SongSerializer
+  
+  def get_serializer_class(self):
+    if self.action == 'update':
+      return SongUpdateSerializer
+    return SongSerializer
 
 class ArtisteViewset(ModelViewSet):
   queryset = Artiste.objects.all()
@@ -14,4 +17,8 @@ class ArtisteViewset(ModelViewSet):
 
 class LyricViewset(ModelViewSet):
   queryset = Lyric.objects.all()
-  serializer_class = LyricSerializer
+
+  def get_serializer_class(self):
+    if self.action == 'update':
+      return LyricUpdateSerializer
+    return LyricSerializer
